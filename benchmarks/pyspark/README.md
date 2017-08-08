@@ -1,3 +1,8 @@
+## Setup
+[This](http://eclsummer2017.blogspot.com/2017/07/how-to-set-up-spark-multi-node-cluster.html) tutorial was used to the spark cluster on AWS (ec2). 
+
+Note: We did not used [EMR](https://aws.amazon.com/emr/), since we could not place the nodes in the same placement group (similar to the setup for HPCC).
+
 ## Usage
 ### Run
 ```

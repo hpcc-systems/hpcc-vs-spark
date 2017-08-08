@@ -119,29 +119,6 @@ class CountWithFilter(KVDataTest):
         self.rdd.filter(lambda (k, v): int(v) % 2).count()
 
 
-class BroadcastWithBytes(PerfTest):
-    def createInputData(self):
-        n = self.options.broadcast_size
-        if n > (1 << 20):
-            block = open("/dev/urandom").read(1 << 20)
-            self.data = block * (n >> 20)
-        else:
-            self.data = open("/dev/urandom").read(n)
-
-    def runTest(self):
-        n = len(self.data)
-        s = self.sc.broadcast(self.data)
-        rdd = self.sc.parallelize(range(self.options.num_partitions), 100)
-        assert rdd.filter(lambda x: len(s.value) == n).count() == self.options.num_partitions
-        s.unpersist()
-
-
-class BroadcastWithSet(BroadcastWithBytes):
-    def createInputData(self):
-        n = self.options.broadcast_size / 32
-        self.data = set(range(n))
-
-
 all_tests = [
      "AggregateByKey",
      "AggregateByKeyInt",

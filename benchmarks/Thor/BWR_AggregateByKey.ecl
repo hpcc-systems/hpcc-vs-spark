@@ -9,4 +9,4 @@ outdata := DATASET(dataset_name, rs_str, THOR);
 
 outdata1 := project(outdata, transform(rs, self.key:=(integer)left.key % unique_keys; self.fill:=ABS((integer)left.fill) % unique_values;));
 outdata2 := table(outdata1, {key, sum(group, fill)}, key, FEW);
-OUTPUT(CHOOSEN(outdata2, 10));
+OUTPUT(COUNT(NOFOLD(outdata2)));

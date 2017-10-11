@@ -1,6 +1,6 @@
-#WORKUNIT('name', 'Count');
+#WORKUNIT('name', 'CountWithFilter');
 dataset_name := '~benchmark::integer::200GB';
 
 rs := {integer key, integer fill};
 outdata := DATASET(dataset_name, rs, THOR);
-output(count(NOCOMBINE(outdata)));
+output(COUNT(NOFOLD(outdata(fill%2=0))));

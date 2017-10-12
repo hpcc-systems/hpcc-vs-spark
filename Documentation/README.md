@@ -96,7 +96,7 @@ Any gain above 1.0 means Spark had a better execution time; gains below 1.0 mean
 
 Below is the ECL code that executes the benchmark functions. You will notice that the last statement of each function is an OUTPUT that outputs the COUNT, i.e. the number of records in the resulting dataset. The main purpose for this statement is to cause the execution of the code. Why? Because statements of an ECL program do NOT execute until an “action” statement is encounter. The OUTPUT statement is our “action” statement.
 
-Also, we have added a statement that one would normally not use, the NOFOLD statement. Why? When doing a COUNT after a SORT, the code generator noticed that since your output was only the COUNT of the sorted dataset, the sort didn’t need to be done because the COUNT of the sorted dataset is that same as the original unsorted dataset. So, the code generated simply created code that gets the COUNT from the meta data of the original unsorted dataset. The NOFOLD statement causes the SORT to be performed.
+Also, we have added a statement that one would normally not use, the NOFOLD statement. Why? When doing a COUNT after a SORT, the code generator realizes that the SORT does not need to be done since the code only outputs the COUNT. So, no code is generated for the SORT since the COUNT of the sorted dataset is the same as the COUNT for the original unsorted dataset. The NOFOLD statement causes the SORT to be performed.
 
 A.1 BWR\_AggregateByKey.ecl
 ---------------------------
@@ -341,7 +341,7 @@ class CountWithFilter(sc: SparkContext) extends KVDataTest(sc, "int") {
 
 https://www.oreilly.com/ideas/investigating-sparks-performance
 
-[2] An HPCC Systems ®can have 2 different types of clusters – a Thor and/or ROXIE cluster. A ROXIE cluster, or rapid delivery engine, functions as the engine that delivers answers to queries (e.g. from the web). The function of a Thor cluster is very similar to the function of a Spark cluster. Both are designed to execute big data workflows, such tasks as extraction, loading, cleansing, transformations, linking and indexing.
+[2] An HPCC Systems can have 2 different types of clusters – a Thor and/or ROXIE cluster. A ROXIE cluster, or rapid delivery engine, functions as the engine that delivers answers to queries (e.g. from the web). The function of a Thor cluster is very similar to the function of a Spark cluster. Both are designed to execute big data workflows, including such tasks as extraction, loading, cleansing, transformations, linking and indexing.
 
 [3] i2.8xlarge instance type is a retired instance type. Today, an equivalent is i3.8xlarge which costs much less, $2.496 per hour.
 

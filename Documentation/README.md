@@ -19,7 +19,7 @@ A parameter that was set on the Thor is the number of slave nodes per instance, 
 
 We tried 3 different settings for slavesPerNode, 4, 8, and 16. We got the fastest execution times with slavesPerNode set to 16. The execution times shown in this paper are for slavesPerNode set to 16.
 
-<span id="_Toc492896165" class="anchor"><span id="_Toc495415019" class="anchor"></span></span>Spark
+<span id="_Toc492896165" class="anchor"><span id="_Toc495415019" class="anchor"></span></span>2.2 Spark
 ---------------------------------------------------------------------------------------------------
 
 There are three parameters we have considered while tuning the performance of Spark namely number of executors, executor core, and executor memory. We found that fastest execution times with executors as 24, executor core as 1 and executor memory is 7000MB.
@@ -27,7 +27,7 @@ There are three parameters we have considered while tuning the performance of Sp
 <span id="_Toc492896166" class="anchor"><span id="_Toc495415020" class="anchor"></span></span>Experimental Methodology
 ======================================================================================================================
 
-The functions executed by both the Thor and Apache Spark clusters were selected for 2 reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others have used the same functions studying the performance of the Apache Spark cluster[4].
+The functions executed by both the Thor and Apache Spark clusters were selected for 2 reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others have used the same functions studying the performance of the Apache Spark cluster<sup>4</sup>.
 
 <span id="_Toc492896167" class="anchor"><span id="_Toc495415021" class="anchor"></span></span>3.1 Data Generation
 -----------------------------------------------------------------------------------------------------------------

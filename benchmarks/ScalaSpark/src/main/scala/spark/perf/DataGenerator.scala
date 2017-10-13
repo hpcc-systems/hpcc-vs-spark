@@ -14,13 +14,13 @@ import org.apache.spark.storage.StorageLevel
 object DataGenerator {
 
   // Port of Guava goodFastHash
-  def goodFastHash(startSeed: Long, minimumBits: Int, valToHash: Int): String = {
+  def goodFastHash(startSeed: Long, minimumBits: Int, valToHash: Long): String = {
     val bits: Int = (minimumBits + 31) & ~31
 
     val hash : String = ""
     if (bits <= 128) {
       val hashFunc = Hashing.murmur3_128(startSeed.toInt)
-      hash.concat(hashFunc.hashInt(valToHash).toString)
+      hash.concat(hashFunc.hashLong(valToHash).toString)
     } else {
 
       // Join some 128-bit murmur3s
@@ -28,7 +28,7 @@ object DataGenerator {
       var seed: Long = startSeed; 
       for (i <- 0 until hashFunctionsNeeded) {
         val hashFunc = Hashing.murmur3_128(seed.toInt)
-        hash.concat(hashFunc.hashInt(valToHash).toString)
+        hash.concat(hashFunc.hashLong(valToHash).toString)
         // a prime; shouldn't matter
         seed += 1500450271
       }
@@ -40,7 +40,7 @@ object DataGenerator {
 
   /** Encode the provided integer as a fixed-length string. If a hash function is provided,
     * the integer is hashed then encoded. */
-  def paddedString(i: Int, length: Int, hashFunction: Option[(Long,Int)] = None): String = {
+  def paddedString(i: Long, length: Int, hashFunction: Option[(Long,Int)] = None): String = {
     hashFunction match {
       case Some(hashParams) =>
         val hash = goodFastHash(hashParams._1,hashParams._2,i)
@@ -61,7 +61,7 @@ object DataGenerator {
       uniqueValues: Int,
       numPartitions: Int,
       randomSeed: Int)
-    : RDD[(Int, Int)] =
+    : RDD[(Long, Long)] =
   {
     val recordsPerPartition = (numRecords / numPartitions.toDouble).toInt
 
@@ -70,8 +70,8 @@ object DataGenerator {
       val effectiveSeed = (randomSeed ^ index).toString.hashCode
       val r = new Random(effectiveSeed)
       (1 to recordsPerPartition).map{i =>
-        val key = r.nextInt(uniqueKeys)
-        val value = r.nextInt(uniqueValues)
+        val key : Long = r.nextInt(uniqueKeys)
+        val value : Long = r.nextInt(uniqueValues)
         (key, value)
       }.iterator
     }
@@ -91,7 +91,7 @@ object DataGenerator {
       randomSeed: Int,
       persistenceType: String,
       storageLocation: String = "/tmp/spark-perf-kv-data")
-    : RDD[(Int, Int)] =
+    : RDD[(Long, Long)] =
   {
     val inputRDD = generateIntData(
       sc, numRecords, uniqueKeys, uniqueValues, numPartitions, randomSeed)
@@ -127,7 +127,7 @@ object DataGenerator {
           println(s"ATTENTION: Using input data already stored in $storageLocation. " +
             s"It is not guaranteed to be consistent with provided parameters.")
         }
-        sc.textFile(storageLocation).map(_.split("\t")).map(x => (x(0).toInt, x(1).toInt))
+        sc.textFile(storageLocation).map(_.split("\t")).map(x => (x(0).toLong, x(1).toLong))
       }
       case unknown => {
         throw new Exception(s"Unrecognized persistence option: $unknown")

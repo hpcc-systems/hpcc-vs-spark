@@ -141,7 +141,7 @@ class AggregateByKey(sc: SparkContext) extends KVDataTest(sc) {
 
 class AggregateByKeyInt(sc: SparkContext) extends KVDataTest(sc, "int") {
   override def runTest(rdd: RDD[_], reduceTasks: Int) {
-    rdd.asInstanceOf[RDD[(Int, Int)]]
+    rdd.asInstanceOf[RDD[(Long, Long)]]
       .reduceByKey(_ + _, reduceTasks).count()
   }
 }
@@ -162,21 +162,21 @@ class SortByKey(sc: SparkContext) extends KVDataTest(sc) {
 
 class SortByKeyInt(sc: SparkContext) extends KVDataTest(sc, "int") {
   override def runTest(rdd: RDD[_], reduceTasks: Int) {
-    rdd.asInstanceOf[RDD[(Int, Int)]]
+    rdd.asInstanceOf[RDD[(Long, Long)]]
       .sortByKey(numPartitions=reduceTasks).count()
   }
 }
 
 class Count(sc: SparkContext) extends KVDataTest(sc, "int") {
   override def runTest(rdd: RDD[_], reduceTasks: Int) {
-    rdd.asInstanceOf[RDD[(Int, Int)]]
+    rdd.asInstanceOf[RDD[(Long, Long)]]
       .count()
   }
 }
 
 class CountWithFilter(sc: SparkContext) extends KVDataTest(sc, "int") {
   override def runTest(rdd: RDD[_], reduceTasks: Int) {
-    rdd.asInstanceOf[RDD[(Int, Int)]]
+    rdd.asInstanceOf[RDD[(Long, Long)]]
       .filter{case (k, v) => k.toInt % 2 == 1}.count()
   }
 }

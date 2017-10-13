@@ -1,69 +1,69 @@
-<span id="_Toc423597827" class="anchor"><span id="_Toc492896162" class="anchor"><span id="_Toc495415016" class="anchor"></span></span></span>Introduction
+<span id="_Toc423597827" class="anchor"><span id="_Toc492896162" class="anchor"><span id="_Toc495656331" class="anchor"></span></span></span>Introduction
 =========================================================================================================================================================
 
 In the past, there have been papers that discussed the performance of Apache Spark<sup>1</sup>. But, no paper has compared the Apache Spark’s performance to the HPCC Systems Thor cluster<sup>2</sup> performance.
 
 When we first became interested in comparing a Thor cluster to an Apache Spark cluster we started to look at the performance of a Thor cluster when executing the Gray Sort. Why? Because a Spark cluster had won the 2014 Gray Sort competition where 100 TBs of data where sorted using 206 AWS i2.8xlarge instance types<sup>1</sup>. We abandoned this effort because of the expense of 206 i2.8xlarge instance types (currently $6.820 per instance per hour or $1,404.92 per hour for 206 instances)<sup>3</sup>.
 
-We decided to host both a Thor and Apache Spark clusters on a small number of lower cost AWS instance type. We felt this would be a good test for two reasons: 1) the lower cost made it possible to do the experiments, and 2) most often those interested in using a data cluster like Thor or Apache Spark would use a smaller number of instances and if they used AWS they would probably use a less expensive instance type. Also, we decided to test the performance of both clusters on a variety of different functions because it would give the reader a better feel for what computation each cluster type performed best. <span id="_Toc492896163" class="anchor"></span>
+We decided to host both Thor and Apache Spark clusters on a small number of lower cost AWS instance types. We felt this would be a good test for two reasons: 1) the lower cost made it possible to do the experiments, and 2) most often those interested in using a data cluster like Thor or Apache Spark would use a smaller number of instances and if they used AWS they would probably use a less expensive instance type. Also, we decided to test the performance of both clusters on a variety of different functions because it would give the reader a better feel for what computation each cluster type performed best. <span id="_Toc492896163" class="anchor"></span>
 
 Cluster Specifications
 ======================
 
-Both the Thor and Spark clusters were created on AWS with one r3.2xlarge instance type for the master and 3 r3.2xlarge instance types for slaves. The r3.2xlarge instance type has 8 cores, 61 GB RAM, and 160 GB SSD storage.
+Both the Thor and Spark clusters were created on AWS with one r3.2xlarge instance type for the master and 3 r3.2xlarge instance types for slaves. The r3.2xlarge instance type has 8 cores, 61 GiB RAM, and 160 GB SSD storage.
 
-<span id="_Toc492896164" class="anchor"><span id="_Toc495415018" class="anchor"></span></span>2.1 Thor
+<span id="_Toc492896164" class="anchor"><span id="_Toc495656333" class="anchor"></span></span>2.1 Thor
 ------------------------------------------------------------------------------------------------------
 
 A parameter that was set on the Thor cluster is the number of slave nodes per instance, i.e. slavesPerNode. This parameter determines 1) how many file parts exists on each instance, e.g. if there are 16 slave nodes per instance then each logical file will have 16 parts on each instance, and 2) the number of virtual slave nodes on each slave instance.
 
 We tried three different settings for slavesPerNode, 4, 8, and 16. We got the fastest execution times with slavesPerNode set to 16. The execution times shown in this paper are for slavesPerNode set to 16.
 
-<span id="_Toc492896165" class="anchor"><span id="_Toc495415019" class="anchor"></span></span>2.2 Spark
----------------------------------------------------------------------------------------------------
+2.2 Spark
+---------
 
-There are three parameters we have considered while tuning the performance of Spark namely number of executors, executor core, and executor memory. We found that fastest execution times with executors as 24, executor core as 1 and executor memory is 7000MB.
+There are three parameters we have considered while tuning the performance of Spark: number of executors, executor core, and executor memory. We found the fastest execution times with executors as 24, executor core as 1 and executor memory is 7000MB.
 
-<span id="_Toc492896166" class="anchor"><span id="_Toc495415020" class="anchor"></span></span>Experimental Methodology
+<span id="_Toc492896166" class="anchor"><span id="_Toc495656335" class="anchor"></span></span>Experimental Methodology
 ======================================================================================================================
 
 The functions executed by both the Thor and Apache Spark clusters were selected for two reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others have used the same functions studying the performance of the Apache Spark cluster<sup>4</sup>.
 
-<span id="_Toc492896167" class="anchor"><span id="_Toc495415021" class="anchor"></span></span>3.1 Data Generation
+<span id="_Toc492896167" class="anchor"><span id="_Toc495656336" class="anchor"></span></span>3.1 Data Generation
 -----------------------------------------------------------------------------------------------------------------
 
-In this work, we have tried to emulate the standard practice of benchmarking followed by other works. Benchmark’s requiring integer data were run with 6.25 billion records for the 100 GB dataset and 12.5 billion for 200 GB dataset. Benchmark’s requiring string data were run with 1 billion records for the 100 GB dataset and 2 billion for the 200 GB. A record of string data has 10 bytes for the key field and 90 bytes for the fill field; while, a record of integer data has 8 bytes for the key field and 8 bytes for the fill field.
+In this work, we have tried to emulate the standard practice of benchmarking followed by other works. Benchmark’s requiring integer data were run with 6.25 billion records for the 100 GB dataset and 12.5 billion for 200 GB dataset. Benchmark’s requiring string data were run with 1 billion records for the 100 GB dataset and 2 billion for the 200 GB. A record of string data has 10 bytes for the key field and 90 bytes for the fill field; while, a record of integer data has 8 bytes for the key field and 8 bytes for the fill field (total of 16 bytes).
 
-For the data, we chose two sizes: 100 GB and 200 GB. These sizes were chosen because 100GB when partitioned (distributed) to the three slave instances would fit in RAM (61 GB of RAM per instance). Further, 200 GB was selected because it would not fit in RAM.
+For the data, we chose two sizes: 100 GB and 200 GB. These sizes were chosen because 100GB when partitioned (distributed) to the three slave instances would fit in RAM (61 GiB of RAM per instance). Further, 200 GB was selected because it would not fit in RAM.
 
-<span id="_Toc492896169" class="anchor"><span id="_Toc495415022" class="anchor"></span></span>3.2 Benchmarking Functions
+<span id="_Toc492896169" class="anchor"><span id="_Toc495656337" class="anchor"></span></span>3.2 Benchmarking Functions
 ------------------------------------------------------------------------------------------------------------------------
 
-### <span id="_Toc492896170" class="anchor"><span id="_Toc495415023" class="anchor"></span></span>***3.2.1 Aggregate by String Key***
+### <span id="_Toc492896170" class="anchor"><span id="_Toc495656338" class="anchor"></span></span>***3.2.1 Aggregate by String Key***
 
 ![](./media/image1.png)
 
-### <span id="_Toc492896171" class="anchor"><span id="_Toc495415024" class="anchor"></span></span>***3.2.2 Aggregate by Integer Key***
+### <span id="_Toc492896171" class="anchor"><span id="_Toc495656339" class="anchor"></span></span>***3.2.2 Aggregate by Integer Key***
 
 ![](./media/image2.png)
 
-### <span id="_Toc492896173" class="anchor"><span id="_Toc495415025" class="anchor"></span></span>***3.2.3 Count***
+### <span id="_Toc492896173" class="anchor"><span id="_Toc495656340" class="anchor"></span></span>***3.2.3 Count***
 
 ![](./media/image3.png)
 
-### <span id="_Toc492896174" class="anchor"><span id="_Toc495415026" class="anchor"></span></span>***3.2.4 Count with Filter***
+### <span id="_Toc492896174" class="anchor"><span id="_Toc495656341" class="anchor"></span></span>***3.2.4 Count with Filter***
 
 ![](./media/image4.png)
 
-1.  ### <span id="_Toc492896175" class="anchor"><span id="_Toc495415027" class="anchor"></span></span>***Sort by String Key***
+1.  ### <span id="_Toc492896175" class="anchor"><span id="_Toc495656342" class="anchor"></span></span>***Sort by String Key***
 
     ![](./media/image5.png)
 
-### <span id="_Toc492896176" class="anchor"><span id="_Toc495415028" class="anchor"></span></span>***3.2.6 Sort by Integer Key***
+### <span id="_Toc492896176" class="anchor"><span id="_Toc495656343" class="anchor"></span></span>***3.2.6 Sort by Integer Key***
 
 ![](./media/image6.png)
 
-<span id="_Toc492896177" class="anchor"><span id="_Toc495415029" class="anchor"></span></span>4. Results: Comparison of Thor to Apache Spark
+<span id="_Toc492896177" class="anchor"><span id="_Toc495656344" class="anchor"></span></span>4. Results: Comparison of Thor to Apache Spark
 ============================================================================================================================================
 
 Below are the bar charts comparing execution times for each benchmark function executed on both Apache Spark and Thor. In section 4.1 and section 4.2 there are two bar charts that compare Apache Spark to Thor. The first bar chart compares execution times when the size of the data is 100GB; while, the second compares execution times when the size of the data is 200 GB. In each bar chart, there are 2 bars: one for Spark (**blue bars**), and one for Thor (**tan bars**).
@@ -78,25 +78,34 @@ Below are the bar charts comparing execution times for each benchmark function e
 
 <span id="_Toc492896181" class="anchor"></span>
 
-<span id="_Toc495415032" class="anchor"><span id="_Toc492896182" class="anchor"><span id="_Toc423597838" class="anchor"></span></span></span>4.3 Gain Bar Charts
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+<span id="_Toc492896182" class="anchor"><span id="_Toc423597838" class="anchor"><span id="_Toc495656347" class="anchor"></span></span></span>4.3 Speedup Bar Charts
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-In this section, there are two bar graphs showing the gain where the gain calculation is: Thor’s execution over Spark’s execution. The first graph shows the gain when the inputted dataset size is 100GB. The second shows the gain when the inputted dataset size is 200 GB.
+In this section, there are two bar graphs showing the speedup where the speedup calculation is: Spark’s execution time over Thor’s execution time. The first graph shows the speedup when the input dataset size is 100GB. The second shows the speedup when the input dataset size is 200 GB.
 
-Any gain above 1.0 means Spark had a better execution time; gains below 1.0 means Thor had a better execution. You will notice that all but one gain is below 1.0.
+Any speedup above 1.0 means Thor had a better execution time; speedups below 1.0 means Spark had a better execution (1.0 is indicated by the **red line**).
 
-### 4.3 Gains for Execution Times of Section 4.1
+### 4.3.1 Analysis of Speedups for 100 GB dataset
 
-![](./media/Gain100GB.png)
+Spark had a better average execution time for SortByKey. For Count, Count Filter and SortByKeyInt both clusters had similar average execution times. And, for AggregateByKey, AggregateByKeyInt, DataGenerationString and DataGenerationInt Thor had better average execution times where AggregateByKey had the largest speedup.
 
-![](./media/Gain200GB.png)
+### 4.3.2 Analysis of Speedups for 200 GB Dataset
 
-<span id="_Toc492896183" class="anchor"><span id="_Toc495415034" class="anchor"></span></span>Appendix A. ECL Code for HPCC Systems
+For SortByKey, both clusters had similar average execution times. For all other benchmark functions, Thor had better average execution times where, again, AggregateByKey had the largest speedup.
+
+### Charts 4.3. Speedups for Execution Times
+![](./media/Speedup100GB.png)
+
+![](./media/Speedup200GB.png)
+
+<span id="_Toc492896183" class="anchor"><span id="_Toc495656349" class="anchor"></span></span>Appendix A. ECL Code for HPCC Systems
 ===================================================================================================================================
 
-Below is the ECL code that executes the benchmark functions. You will notice that the last statement of each function is an OUTPUT that outputs the COUNT, i.e. the number of records in the resulting dataset. The main purpose for this statement is to cause the execution of the code. Why? Because statements of an ECL program do NOT execute until an “action” statement is encounter. The OUTPUT statement is our “action” statement.
+Below is the ECL code that executes the benchmark functions. You will notice that the last statement of each function is an OUTPUT statement that outputs the COUNT, i.e. the number of records in the resulting dataset. The main purpose for this statement is to cause the execution of the code. Why? Because statements of an ECL program do NOT execute until an “action” statement is encounter. The OUTPUT statement is our “action” statement.
 
-Also, we have added a statement that one would normally not use, the NOFOLD statement. Why? When doing a COUNT after a SORT, the code generator realizes that the SORT does not need to be done since the code only outputs the COUNT. So, no code is generated for the SORT since the COUNT of the sorted dataset is the same as the COUNT for the original unsorted dataset. The NOFOLD statement causes the SORT to be performed.
+We have also added a statement that one would normally not use, the NOFOLD statement. Why? When doing a COUNT after a SORT, the code generator realizes that the SORT does not need to be done since the code only outputs the COUNT. So, no code is generated for the SORT since the COUNT of the sorted dataset is the same as the COUNT for the original unsorted dataset. The NOFOLD statement causes the SORT to be performed.
+
+In general, the NOFOLD statement causes the code that is generated to be unoptimized.
 
 A.1 BWR\_AggregateByKey.ecl
 ---------------------------
@@ -248,90 +257,428 @@ outdata1 := sort(outdata, key);
 
 OUTPUT(COUNT(NOFOLD(outdata1)));
 
-<span id="_Toc423597842" class="anchor"><span id="_Toc492896191" class="anchor"><span id="_Toc495415043" class="anchor"></span></span></span>Appendix B. Code for Spark (Scala)
+<span id="_Toc423597842" class="anchor"><span id="_Toc492896191" class="anchor"><span id="_Toc495656358" class="anchor"></span></span></span>Appendix B. Code for Spark (Scala)
 ===============================================================================================================================================================================
+
+Below, first find the scala object DataGenerator which includes the code to generate both the string and integer data. After the DataGenerator is the scala code for the six benchmark functions.
+
+object DataGenerator {
+
+// Port of Guava goodFastHash
+
+def goodFastHash(startSeed: Long, minimumBits: Int, valToHash: Long): String = {
+
+val bits: Int = (minimumBits + 31) & ~31
+
+val hash : String = ""
+
+if (bits \<= 128) {
+
+val hashFunc = Hashing.murmur3\_128(startSeed.toInt)
+
+hash.concat(hashFunc.hashLong(valToHash).toString)
+
+} else {
+
+// Join some 128-bit murmur3s
+
+val hashFunctionsNeeded: Int = (bits + 127) / 128
+
+var seed: Long = startSeed;
+
+for (i \<- 0 until hashFunctionsNeeded) {
+
+val hashFunc = Hashing.murmur3\_128(seed.toInt)
+
+hash.concat(hashFunc.hashLong(valToHash).toString)
+
+// a prime; shouldn't matter
+
+seed += 1500450271
+
+}
+
+}
+
+hash
+
+}
+
+/\*\* Encode the provided integer as a fixed-length string. If a hash function is provided,
+
+\* the integer is hashed then encoded. \*/
+
+def paddedString(i: Long, length: Int, hashFunction: Option[(Long,Int)] = None): String = {
+
+hashFunction match {
+
+case Some(hashParams) =\>
+
+val hash = goodFastHash(hashParams.\_1,hashParams.\_2,i)
+
+val out = hash.take(length)
+
+require(out.length == length, s"Hash code was too short for requested length: $length")
+
+out
+
+case None =\>
+
+val fmtString = "%%0%sd".format(length)
+
+fmtString.format(i)
+
+}
+
+}
+
+/\*\* Creates a key-value int dataset but does not cache it, allowing for subsequent processing \*/
+
+private def generateIntData(
+
+sc: SparkContext,
+
+numRecords: Long,
+
+uniqueKeys: Int,
+
+uniqueValues: Int,
+
+numPartitions: Int,
+
+randomSeed: Int)
+
+: RDD[(Long, Long)] =
+
+{
+
+val recordsPerPartition = (numRecords / numPartitions.toDouble).toInt
+
+def generatePartition(index: Int) = {
+
+// Use per-partition seeds to avoid having identical data at all partitions
+
+val effectiveSeed = (randomSeed ^ index).toString.hashCode
+
+val r = new Random(effectiveSeed)
+
+(1 to recordsPerPartition).map{i =\>
+
+val key : Long = r.nextInt(uniqueKeys)
+
+val value : Long = r.nextInt(uniqueValues)
+
+(key, value)
+
+}.iterator
+
+}
+
+sc.parallelize(Seq[Int](), numPartitions).mapPartitionsWithIndex{case (index, n) =\> {
+
+generatePartition(index)
+
+}}
+
+}
+
+/\*\* Creates and materializes a (K, V) int dataset according to the supplied parameters. \*/
+
+def createKVIntDataSet(
+
+sc: SparkContext,
+
+numRecords: Long,
+
+uniqueKeys: Int,
+
+uniqueValues: Int,
+
+numPartitions: Int,
+
+randomSeed: Int,
+
+persistenceType: String,
+
+storageLocation: String = "/tmp/spark-perf-kv-data")
+
+: RDD[(Long, Long)] =
+
+{
+
+val inputRDD = generateIntData(
+
+sc, numRecords, uniqueKeys, uniqueValues, numPartitions, randomSeed)
+
+val rdd = persistenceType match {
+
+case "memory" =\> {
+
+val tmp = inputRDD.persist(StorageLevel.MEMORY\_ONLY)
+
+tmp.count()
+
+tmp
+
+}
+
+case "memory\_and\_disk\_ser" =\> {
+
+val tmp = inputRDD.persist(StorageLevel.MEMORY\_AND\_DISK\_SER)
+
+tmp.count()
+
+tmp
+
+}
+
+case "memory\_ser" =\> {
+
+val tmp = inputRDD.persist(StorageLevel.MEMORY\_ONLY\_SER)
+
+tmp.count()
+
+tmp
+
+}
+
+case "disk" =\> {
+
+val tmp = inputRDD.persist(StorageLevel.DISK\_ONLY)
+
+tmp.count()
+
+tmp
+
+}
+
+case "hdfs" =\> {
+
+val storagePath = new Path(storageLocation)
+
+val fileSystem = storagePath.getFileSystem(new Configuration())
+
+if (!fileSystem.exists(storagePath)) {
+
+inputRDD.map{case (k, v) =\> "%s\\t%s".format(k, v)}
+
+.saveAsTextFile(storageLocation, classOf[DefaultCodec])
+
+} else {
+
+println(s"ATTENTION: Using input data already stored in $storageLocation. " +
+
+s"It is not guaranteed to be consistent with provided parameters.")
+
+}
+
+sc.textFile(storageLocation).map(\_.split("\\t")).map(x =\> (x(0).toLong, x(1).toLong))
+
+}
+
+case unknown =\> {
+
+throw new Exception(s"Unrecognized persistence option: $unknown")
+
+}
+
+}
+
+rdd
+
+}
+
+/\*\* Creates and materializes a (K, V) string dataset according to the supplied parameters. \*/
+
+def createKVStringDataSet(
+
+sc: SparkContext,
+
+numRecords: Long,
+
+uniqueKeys: Int,
+
+keyLength: Int,
+
+uniqueValues: Int,
+
+valueLength: Int,
+
+numPartitions: Int,
+
+randomSeed: Int,
+
+persistenceType: String,
+
+storageLocation: String = "/tmp/spark-perf-kv-data",
+
+hashFunction: Option[(Long,Int)] = None)
+
+: RDD[(String, String)] =
+
+{
+
+val ints = generateIntData(
+
+sc, numRecords, uniqueKeys, uniqueValues, numPartitions, randomSeed)
+
+val inputRDD = ints.map { case (k, v) =\>
+
+(paddedString(k, keyLength, hashFunction), paddedString(v, valueLength, hashFunction))
+
+}
+
+val rdd = persistenceType match {
+
+case "memory" =\> {
+
+val tmp = inputRDD.persist(StorageLevel.MEMORY\_ONLY)
+
+tmp.count()
+
+tmp
+
+}
+
+case "memory\_and\_disk\_ser" =\> {
+
+val tmp = inputRDD.persist(StorageLevel.MEMORY\_AND\_DISK\_SER)
+
+tmp.count()
+
+tmp
+
+}
+
+case "memory\_ser" =\> {
+
+val tmp = inputRDD.persist(StorageLevel.MEMORY\_ONLY\_SER)
+
+tmp.count()
+
+tmp
+
+}
+
+case "disk" =\> {
+
+val tmp = inputRDD.persist(StorageLevel.DISK\_ONLY)
+
+tmp.count()
+
+tmp
+
+}
+
+case "hdfs" =\> {
+
+val storagePath = new Path(storageLocation)
+
+val fileSystem = storagePath.getFileSystem(new Configuration())
+
+val pathExists = fileSystem.exists(storagePath) && fileSystem.listStatus(storagePath).length \> 0
+
+if (!pathExists) {
+
+inputRDD.map{case (k, v) =\> "%s\\t%s".format(k, v)}
+
+.saveAsTextFile(storageLocation, classOf[DefaultCodec])
+
+} else {
+
+println(s"ATTENTION: Using input data already stored in $storageLocation. " +
+
+s"It is not guaranteed to be consistent with provided parameters.")
+
+}
+
+sc.textFile(storageLocation).map(\_.split("\\t")).map(x =\> (x(0), x(1)))
+
+}
+
+case unknown =\> {
+
+throw new Exception(s"Unrecognized persistence option: $unknown")
+
+}
+
+}
+
+rdd
+
+}
+
+}
 
 class AggregateByKey(sc: SparkContext) extends KVDataTest(sc) {
 
-  override def runTest(rdd: RDD[\_], reduceTasks: Int) {
+override def runTest(rdd: RDD[\_], reduceTasks: Int) {
 
-    rdd.asInstanceOf[RDD[(String, String)]]
+rdd.asInstanceOf[RDD[(String, String)]]
 
-      .map{case (k, v) =\> (k, v.toInt)}.reduceByKey(\_ + \_, reduceTasks).count()
+.map{case (k, v) =\> (k, v.toInt)}.reduceByKey(\_ + \_, reduceTasks).count()
 
-  }
+}
 
 }
 
 class AggregateByKeyInt(sc: SparkContext) extends KVDataTest(sc, "int") {
 
-  override def runTest(rdd: RDD[\_], reduceTasks: Int) {
+override def runTest(rdd: RDD[\_], reduceTasks: Int) {
 
-    rdd.asInstanceOf[RDD[(Int, Int)]]
+rdd.asInstanceOf[RDD[(Long, Long)]]
 
-      .reduceByKey(\_ + \_, reduceTasks).count()
-
-  }
+.reduceByKey(\_ + \_, reduceTasks).count()
 
 }
-
-class AggregateByKeyNaive(sc: SparkContext) extends KVDataTest(sc) {
-
-  override def runTest(rdd: RDD[\_], reduceTasks: Int) {
-
-    rdd.asInstanceOf[RDD[(String, String)]]
-
-      .map{case (k, v) =\> (k, v.toInt)}.groupByKey.map{case (k, vs) =\> vs.sum}.count()
-
-  }
 
 }
 
 class SortByKey(sc: SparkContext) extends KVDataTest(sc) {
 
-  override def runTest(rdd: RDD[\_], reduceTasks: Int) {
+override def runTest(rdd: RDD[\_], reduceTasks: Int) {
 
-    rdd.asInstanceOf[RDD[(String, String)]]
+rdd.asInstanceOf[RDD[(String, String)]]
 
-      .sortByKey(numPartitions=reduceTasks).count()
+.sortByKey(numPartitions=reduceTasks).count()
 
-  }
+}
 
 }
 
 class SortByKeyInt(sc: SparkContext) extends KVDataTest(sc, "int") {
 
-  override def runTest(rdd: RDD[\_], reduceTasks: Int) {
+override def runTest(rdd: RDD[\_], reduceTasks: Int) {
 
-    rdd.asInstanceOf[RDD[(Int, Int)]]
+rdd.asInstanceOf[RDD[(Long, Long)]]
 
-      .sortByKey(numPartitions=reduceTasks).count()
+.sortByKey(numPartitions=reduceTasks).count()
 
-  }
+}
 
 }
 
 class Count(sc: SparkContext) extends KVDataTest(sc, "int") {
 
-  override def runTest(rdd: RDD[\_], reduceTasks: Int) {
+override def runTest(rdd: RDD[\_], reduceTasks: Int) {
 
-    rdd.asInstanceOf[RDD[(Int, Int)]]
+rdd.asInstanceOf[RDD[(Long, Long)]]
 
-      .count()
+.count()
 
-  }
+}
 
 }
 
 class CountWithFilter(sc: SparkContext) extends KVDataTest(sc, "int") {
 
-  override def runTest(rdd: RDD[\_], reduceTasks: Int) {
+override def runTest(rdd: RDD[\_], reduceTasks: Int) {
 
-    rdd.asInstanceOf[RDD[(Int, Int)]]
+rdd.asInstanceOf[RDD[(Long, Long)]]
 
-      .filter{case (k, v) =\> k.toInt % 2 == 1}.count()
+.filter{case (k, v) =\> k.toInt % 2 == 1}.count()
 
-  }
+}
 
 }
 

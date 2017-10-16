@@ -683,7 +683,8 @@ rdd.asInstanceOf[RDD[(Long, Long)]]
 }
 ## Footnotes
 <a name="f1">
-</a>
+   </a>
+
 [1] [https://spark.apache.org/news/spark-wins-daytona-gray-sort-100tb-benchmark.html](../customXml/item1.xml)
 
 [https://link.springer.com/chapter/10.1007/978-3-319-31409-9\_3](../customXml/item2.xml)
@@ -692,14 +693,17 @@ https://www.oreilly.com/ideas/investigating-sparks-performance
 
 <a name="f2">
    </a>
+
 [2] An HPCC Systems can have two different types of clusters – a Thor and/or ROXIE cluster. A ROXIE cluster, or rapid delivery engine, functions as the engine that delivers answers to queries (e.g. from the web). The function of a Thor cluster is very similar to the function of a Spark cluster. Both are designed to execute big data workflows, including such tasks as extraction, loading, cleansing, transformations, linking and indexing.
 
 
 <a name="f3">
    </a>
+
 [3] i2.8xlarge instance type is a retired instance type. Today, an equivalent is i3.8xlarge which costs much less, $2.496 per hour.
 
 
 <a name="f4">
    </a>
+
 [4] [https://github.com/databricks/spark-perf](numbering.xml)

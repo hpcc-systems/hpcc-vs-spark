@@ -97,6 +97,7 @@ In general, the NOFOLD statement causes the code that is generated to be unoptim
 
 ## A.1 ***BWR\_AggregateByKey.ecl***
 
+```
 \#WORKUNIT('name', 'AggregateByKey');
 
 unique\_keys := 100000;
@@ -116,6 +117,7 @@ outdata1 := project(outdata, transform(rs, self.fill:=ABS((integer)left.fill); s
 outdata2 := table(outdata1, {key, sum(group, fill)}, key, FEW);
 
 OUTPUT(COUNT(NOFOLD(outdata2)));
+```
 
 ## A.2 ***BWR\_AggregateByKeyInt.ecl***
 

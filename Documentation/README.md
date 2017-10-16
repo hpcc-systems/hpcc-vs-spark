@@ -98,24 +98,15 @@ In general, the NOFOLD statement causes the code that is generated to be unoptim
 ## A.1 ***BWR\_AggregateByKey.ecl***
 
 ```
-\#WORKUNIT('name', 'AggregateByKey');
-
-unique\_keys := 100000;
-
-unique\_values := 10212;
-
-dataset\_name := '~benchmark::string';
-
+#WORKUNIT('name', 'AggregateByKey');
+unique_keys := 100000;
+unique_values := 10212;
+dataset_name := '~benchmark::string';
 rs := {integer key, integer fill};
-
-rs\_str := {string10 key, string90 fill};
-
-outdata := DATASET(dataset\_name, rs\_str, THOR);
-
+rs_str := {string10 key, string90 fill};
+outdata := DATASET(dataset_name, rs_str, THOR);
 outdata1 := project(outdata, transform(rs, self.fill:=ABS((integer)left.fill); self:=left));
-
 outdata2 := table(outdata1, {key, sum(group, fill)}, key, FEW);
-
 OUTPUT(COUNT(NOFOLD(outdata2)));
 ```
 

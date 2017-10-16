@@ -1,5 +1,4 @@
-<span id="_Toc423597827" class="anchor"><span id="_Toc492896162" class="anchor"><span id="_Toc495656331" class="anchor"></span></span></span>Introduction
-=========================================================================================================================================================
+# 1 Introduction
 
 In the past, there have been papers that discussed the performance of Apache Spark[<sup>1</sup>](#f1). But, no paper has compared the Apache Spark’s performance to the HPCC Systems Thor cluster[<sup>2</sup>](#f2) performance.
 
@@ -7,64 +6,57 @@ When we first became interested in comparing a Thor cluster to an Apache Spark c
 
 We decided to host both Thor and Apache Spark clusters on a small number of lower cost AWS instance types. We felt this would be a good test for two reasons: 1) the lower cost made it possible to do the experiments, and 2) most often those interested in using a data cluster like Thor or Apache Spark would use a smaller number of instances and if they used AWS they would probably use a less expensive instance type. Also, we decided to test the performance of both clusters on a variety of different functions because it would give the reader a better feel for what computation each cluster type performed best. <span id="_Toc492896163" class="anchor"></span>
 
-Cluster Specifications
-======================
+# 2 Cluster Specifications
 
 Both the Thor and Spark clusters were created on AWS with one r3.2xlarge instance type for the master and 3 r3.2xlarge instance types for slaves. The r3.2xlarge instance type has 8 cores, 61 GiB RAM, and 160 GB SSD storage.
 
-<span id="_Toc492896164" class="anchor"><span id="_Toc495656333" class="anchor"></span></span>2.1 Thor
-------------------------------------------------------------------------------------------------------
+## 2.1 Thor
 
 A parameter that was set on the Thor cluster is the number of slave nodes per instance, i.e. slavesPerNode. This parameter determines 1) how many file parts exists on each instance, e.g. if there are 16 slave nodes per instance then each logical file will have 16 parts on each instance, and 2) the number of virtual slave nodes on each slave instance.
 
 We tried three different settings for slavesPerNode, 4, 8, and 16. We got the fastest execution times with slavesPerNode set to 16. The execution times shown in this paper are for slavesPerNode set to 16.
 
-2.2 Spark
----------
+## 2.2 Spark
 
 There are three parameters we have considered while tuning the performance of Spark: number of executors, executor core, and executor memory. We found the fastest execution times with executors as 24, executor core as 1 and executor memory is 7000MB.
 
-<span id="_Toc492896166" class="anchor"><span id="_Toc495656335" class="anchor"></span></span>Experimental Methodology
-======================================================================================================================
+# 3 Experimental Methodology
 
 The functions executed by both the Thor and Apache Spark clusters were selected for two reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others (specifically DataBricks) have used the same functions studying the performance of the Apache Spark cluster[<sup>4</sup>](#f4).
 
-<span id="_Toc492896167" class="anchor"><span id="_Toc495656336" class="anchor"></span></span>3.1 Data Generation
------------------------------------------------------------------------------------------------------------------
+## 3.1 Data Generation
 
 In this work, we have tried to emulate the standard practice of benchmarking followed by other works. Benchmark’s requiring integer data were run with 6.25 billion records for the 100 GB dataset and 12.5 billion for 200 GB dataset. Benchmark’s requiring string data were run with 1 billion records for the 100 GB dataset and 2 billion for the 200 GB. A record of string data has 10 bytes for the key field and 90 bytes for the fill field; while, a record of integer data has 8 bytes for the key field and 8 bytes for the fill field (total of 16 bytes).
 
 For the data, we chose two sizes: 100 GB and 200 GB. These sizes were chosen because 100GB when partitioned (distributed) to the three slave instances would fit in RAM (61 GiB of RAM per instance). Further, 200 GB was selected because it would not fit in RAM.
 
-<span id="_Toc492896169" class="anchor"><span id="_Toc495656337" class="anchor"></span></span>3.2 Benchmarking Functions
-------------------------------------------------------------------------------------------------------------------------
+## 3.2 Benchmarking Functions
 
-### <span id="_Toc492896170" class="anchor"><span id="_Toc495656338" class="anchor"></span></span>***3.2.1 Aggregate by String Key***
+### ***3.2.1 Aggregate by String Key***
 
 ![](./media/image1.png)
 
-### <span id="_Toc492896171" class="anchor"><span id="_Toc495656339" class="anchor"></span></span>***3.2.2 Aggregate by Integer Key***
+### ***3.2.2 Aggregate by Integer Key***
 
 ![](./media/image2.png)
 
-### <span id="_Toc492896173" class="anchor"><span id="_Toc495656340" class="anchor"></span></span>***3.2.3 Count***
+### ***3.2.3 Count***
 
 ![](./media/image3.png)
 
-### <span id="_Toc492896174" class="anchor"><span id="_Toc495656341" class="anchor"></span></span>***3.2.4 Count with Filter***
+### ***3.2.4 Count with Filter***
 
 ![](./media/image4.png)
 
-1.  ### <span id="_Toc492896175" class="anchor"><span id="_Toc495656342" class="anchor"></span></span>***Sort by String Key***
+### ***Sort by String Key***
 
-    ![](./media/image5.png)
+![](./media/image5.png)
 
-### <span id="_Toc492896176" class="anchor"><span id="_Toc495656343" class="anchor"></span></span>***3.2.6 Sort by Integer Key***
+### ***3.2.6 Sort by Integer Key***
 
 ![](./media/image6.png)
 
-<span id="_Toc492896177" class="anchor"><span id="_Toc495656344" class="anchor"></span></span>4. Results: Comparison of Thor to Apache Spark
-============================================================================================================================================
+# 4 Results: Comparison of Thor to Apache Spark
 
 Below are the bar charts comparing execution times for each benchmark function executed on both Apache Spark and Thor. In section 4.1 and section 4.2 there are two bar charts that compare Apache Spark to Thor. The first bar chart compares execution times when the size of the data is 100GB; while, the second compares execution times when the size of the data is 200 GB. In each bar chart, there are 2 bars: one for Spark (**blue bars**), and one for Thor (**tan bars**).
 
@@ -76,10 +68,7 @@ Below are the bar charts comparing execution times for each benchmark function e
 
 ![](./media/barchart200GB.png)
 
-<span id="_Toc492896181" class="anchor"></span>
-
-<span id="_Toc492896182" class="anchor"><span id="_Toc423597838" class="anchor"><span id="_Toc495656347" class="anchor"></span></span></span>4.3 Speedup Bar Charts
--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## 4.3 Speedup Bar Charts
 
 In this section, there are two bar graphs showing the speedup where the speedup calculation is: Spark’s execution time over Thor’s execution time. The first graph shows the speedup when the input dataset size is 100GB. The second shows the speedup when the input dataset size is 200 GB.
 
@@ -98,8 +87,7 @@ For SortByKey, both clusters had similar average execution times. For all other 
 
 ![](./media/Speedup200GB.png)
 
-<span id="_Toc492896183" class="anchor"><span id="_Toc495656349" class="anchor"></span></span>Appendix A. ECL Code for HPCC Systems
-===================================================================================================================================
+# Appendix A. ECL Code for HPCC Systems
 
 Below is the ECL code that executes the benchmark functions. You will notice that the last statement of each function is an OUTPUT statement that outputs the COUNT, i.e. the number of records in the resulting dataset. The main purpose for this statement is to cause the execution of the code. Why? Because statements of an ECL program do NOT execute until an “action” statement is encounter. The OUTPUT statement is our “action” statement.
 
@@ -107,8 +95,7 @@ We have also added a statement that one would normally not use, the NOFOLD state
 
 In general, the NOFOLD statement causes the code that is generated to be unoptimized.
 
-A.1 BWR\_AggregateByKey.ecl
----------------------------
+## A.1 ***BWR\_AggregateByKey.ecl***
 
 \#WORKUNIT('name', 'AggregateByKey');
 
@@ -130,8 +117,7 @@ outdata2 := table(outdata1, {key, sum(group, fill)}, key, FEW);
 
 OUTPUT(COUNT(NOFOLD(outdata2)));
 
-A.2 BWR\_AggregateByKeyInt.ecl
-------------------------------
+## A.2 ***BWR\_AggregateByKeyInt.ecl***
 
 \#WORKUNIT('name', 'AggregateByKeyInt');
 
@@ -145,8 +131,7 @@ outdata1 := table(outdata, {key, sum(group, fill)}, key, FEW);
 
 OUTPUT(COUNT(NOFOLD(outdata1)));
 
-A.3 BWR\_Count.ecl
-------------------
+## ***A.3 BWR\_Count.ecl***
 
 \#WORKUNIT('name', 'Count');
 
@@ -158,8 +143,7 @@ outdata := DATASET(dataset\_name, rs, THOR);
 
 OUTPUT(COUNT(NOFOLD(outdata)));
 
-A.4 BWR\_CountWithFilter.ecl
-----------------------------
+## ***A.4 BWR\_CountWithFilter.ecl***
 
 \#WORKUNIT('name', 'CountWithFilter');
 
@@ -171,8 +155,7 @@ outdata := DATASET(dataset\_name, rs, THOR);
 
 OUTPUT(COUNT(NOFOLD(outdata(fill%2=1))));
 
-A.5 BWR\_DataGenerationInteger.ecl
-----------------------------------
+## A.5 ***BWR\_DataGenerationInteger.ecl***
 
 \#WORKUNIT('name', 'DataGenerationInteger');
 
@@ -200,8 +183,7 @@ IF( not STD.File.FileExists(dataset\_name)
 
 );
 
-A.6 BWR\_DataGenerationString.ecl
----------------------------------
+## A.6 ***BWR\_DataGenerationString.ecl***
 
 \#WORKUNIT('name', 'DataGenerationString');
 
@@ -227,8 +209,7 @@ outdata := DATASET(totalrecs, transform(rec, self.key := gen\_key(), self.fill :
 
 OUTPUT(outdata,,dataset\_name,overwrite);
 
-A.7 BWR\_SortByKey.ecl
-----------------------
+## A.7 ***BWR\_SortByKey.ecl***
 
 \#WORKUNIT('name', 'SortByKey');
 
@@ -242,8 +223,7 @@ outdata1 := sort(outdata, key);
 
 OUTPUT(COUNT(NOFOLD(outdata1)));
 
-A.8 BWR\_SortByKeyInt.ecl
--------------------------
+## A.8 ***BWR\_SortByKeyInt.ecl***
 
 \#WORKUNIT('name', 'SortByKeyInt');
 
@@ -257,8 +237,7 @@ outdata1 := sort(outdata, key);
 
 OUTPUT(COUNT(NOFOLD(outdata1)));
 
-<span id="_Toc423597842" class="anchor"><span id="_Toc492896191" class="anchor"><span id="_Toc495656358" class="anchor"></span></span></span>Appendix B. Code for Spark (Scala)
-===============================================================================================================================================================================
+# Appendix B. Code for Spark (Scala)
 
 Below, first find the scala object DataGenerator which includes the code to generate both the string and integer data. After the DataGenerator is the scala code for the six benchmark functions.
 

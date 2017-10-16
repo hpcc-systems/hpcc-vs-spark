@@ -439,7 +439,6 @@ class CountWithFilter(sc: SparkContext) extends KVDataTest(sc, "int") {
 
 ## Footnotes
 <a name="f1"></a>
-
 [1] [https://spark.apache.org/news/spark-wins-daytona-gray-sort-100tb-benchmark.html](../customXml/item1.xml)
 
 [https://link.springer.com/chapter/10.1007/978-3-319-31409-9\_3](../customXml/item2.xml)

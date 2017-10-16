@@ -27,7 +27,7 @@ There are three parameters we have considered while tuning the performance of Sp
 <span id="_Toc492896166" class="anchor"><span id="_Toc495656335" class="anchor"></span></span>Experimental Methodology
 ======================================================================================================================
 
-The functions executed by both the Thor and Apache Spark clusters were selected for two reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others have used the same functions studying the performance of the Apache Spark cluster<sup>4</sup>.
+The functions executed by both the Thor and Apache Spark clusters were selected for two reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others (specifically DataBricks) have used the same functions studying the performance of the Apache Spark cluster<sup>4</sup>.
 
 <span id="_Toc492896167" class="anchor"><span id="_Toc495656336" class="anchor"></span></span>3.1 Data Generation
 -----------------------------------------------------------------------------------------------------------------
@@ -692,4 +692,4 @@ https://www.oreilly.com/ideas/investigating-sparks-performance
 
 [3] i2.8xlarge instance type is a retired instance type. Today, an equivalent is i3.8xlarge which costs much less, $2.496 per hour.
 
-[4] [https://wr.informatik.uni-hamburg.de/\_media/teaching/wintersemester\_2015\_2016/bd-1516-spark.pdf](numbering.xml)
+[4] [https://github.com/databricks/spark-perf](numbering.xml)

@@ -10,6 +10,8 @@
 
 [Appendix B. Code for Spark (Scala)](#s6)
 
+[Footnotes](#s7)
+
 <a name="s1"></a>
 # 1 Introduction
 
@@ -455,6 +457,7 @@ class CountWithFilter(sc: SparkContext) extends KVDataTest(sc, "int") {
 
 ```
 
+<a name="s7"></a>
 ## Footnotes
 <a name="f1"></a>
 [1] [https://spark.apache.org/news/spark-wins-daytona-gray-sort-100tb-benchmark.html](../customXml/item1.xml)

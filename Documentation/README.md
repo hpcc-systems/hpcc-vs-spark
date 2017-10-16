@@ -112,128 +112,98 @@ OUTPUT(COUNT(NOFOLD(outdata2)));
 
 ## A.2 ***BWR\_AggregateByKeyInt.ecl***
 
-\#WORKUNIT('name', 'AggregateByKeyInt');
-
-dataset\_name := '~benchmark::integer';
-
+```
+#WORKUNIT('name', 'AggregateByKeyInt');
+dataset_name := '~benchmark::integer';
 rs := {integer key, integer fill};
-
-outdata := DATASET(dataset\_name, rs, THOR);
-
+outdata := DATASET(dataset_name, rs, THOR);
 outdata1 := table(outdata, {key, sum(group, fill)}, key, FEW);
-
 OUTPUT(COUNT(NOFOLD(outdata1)));
+```
 
 ## ***A.3 BWR\_Count.ecl***
 
-\#WORKUNIT('name', 'Count');
-
-dataset\_name := '~benchmark::integer';
-
+```
+#WORKUNIT('name', 'Count');
+dataset_name := '~benchmark::integer';
 rs := {integer key, integer fill};
-
-outdata := DATASET(dataset\_name, rs, THOR);
-
+outdata := DATASET(dataset_name, rs, THOR);
 OUTPUT(COUNT(NOFOLD(outdata)));
+```
 
 ## ***A.4 BWR\_CountWithFilter.ecl***
 
-\#WORKUNIT('name', 'CountWithFilter');
-
-dataset\_name := '~benchmark::integer';
-
+```
+#WORKUNIT('name', 'CountWithFilter');
+dataset_name := '~benchmark::integer';
 rs := {integer key, integer fill};
-
-outdata := DATASET(dataset\_name, rs, THOR);
-
+outdata := DATASET(dataset_name, rs, THOR);
 OUTPUT(COUNT(NOFOLD(outdata(fill%2=1))));
+```
 
 ## A.5 ***BWR\_DataGenerationInteger.ecl***
 
-\#WORKUNIT('name', 'DataGenerationInteger');
-
+```
+#WORKUNIT('name', 'DataGenerationInteger');
 IMPORT STD;
-
-unique\_keys := 100000;
-
-unique\_values := 10212;
-
-dataset\_name := '~benchmark::integer';
-
+unique_keys := 100000;
+unique_values := 10212;
+dataset_name := '~benchmark::integer';
 totalrecs := 12500000000;
-
 unsigned8 numrecs := totalrecs/CLUSTERSIZE;
-
 rec := {integer key, integer fill};
-
 outdata := DATASET(totalrecs, transform(rec, self.key := random() % unique\_keys; self.fill := random() % unique\_values;), DISTRIBUTED);
 
-IF( not STD.File.FileExists(dataset\_name)
-
+IF( not STD.File.FileExists(dataset_name)
 ,OUTPUT(outdata,,dataset\_name)
-
-,OUTPUT('Dataset '+dataset\_name+' ALREADY EXISTS.')
-
+,OUTPUT('Dataset '+dataset_name+' ALREADY EXISTS.')
 );
+```
 
 ## A.6 ***BWR\_DataGenerationString.ecl***
 
-\#WORKUNIT('name', 'DataGenerationString');
-
+```
+#WORKUNIT('name', 'DataGenerationString');
 IMPORT STD;
-
-dataset\_name := '~benchmark::string';
-
+dataset_name := '~benchmark::string';
 totalrecs := 2000000000;
-
 unsigned8 numrecs := totalrecs/CLUSTERSIZE;
-
 rec := {string10 key, string90 fill};
-
-unique\_keys := 100000;
-
-unique\_values := 10212;
-
-STRING10 gen\_key() := INTFORMAT(RANDOM()%unique\_keys,10,1);
-
-STRING10 gen\_fill() := INTFORMAT(RANDOM()%unique\_values,90,1);
-
-outdata := DATASET(totalrecs, transform(rec, self.key := gen\_key(), self.fill := gen\_fill()), DISTRIBUTED);
-
+unique_keys := 100000;
+unique_values := 10212;
+STRING10 gen_key() := INTFORMAT(RANDOM()%unique_keys,10,1);
+STRING10 gen_fill() := INTFORMAT(RANDOM()%unique_values,90,1);
+outdata := DATASET(totalrecs, transform(rec, self.key := gen_key(), self.fill := gen_fill()), DISTRIBUTED);
 OUTPUT(outdata,,dataset\_name,overwrite);
+```
 
 ## A.7 ***BWR\_SortByKey.ecl***
 
-\#WORKUNIT('name', 'SortByKey');
-
-dataset\_name := '~benchmark::string';
-
-rs\_str := {string10 key, string90 fill};
-
-outdata := DATASET(dataset\_name, rs\_str, THOR);
-
+```
+#WORKUNIT('name', 'SortByKey');
+dataset_name := '~benchmark::string';
+rs_str := {string10 key, string90 fill};
+outdata := DATASET(dataset_name, rs_str, THOR);
 outdata1 := sort(outdata, key);
-
 OUTPUT(COUNT(NOFOLD(outdata1)));
+```
 
 ## A.8 ***BWR\_SortByKeyInt.ecl***
 
-\#WORKUNIT('name', 'SortByKeyInt');
-
-dataset\_name := '~benchmark::integer';
-
+```
+#WORKUNIT('name', 'SortByKeyInt');
+dataset_name := '~benchmark::integer';
 rs := {integer key, integer fill};
-
-outdata := DATASET(dataset\_name, rs, THOR);
-
+outdata := DATASET(dataset_name, rs, THOR);
 outdata1 := sort(outdata, key);
-
 OUTPUT(COUNT(NOFOLD(outdata1)));
+```
 
 # Appendix B. Code for Spark (Scala)
 
 Below, first find the scala object DataGenerator which includes the code to generate both the string and integer data. After the DataGenerator is the scala code for the six benchmark functions.
 
+```
 object DataGenerator {
 
 // Port of Guava goodFastHash
@@ -653,6 +623,8 @@ rdd.asInstanceOf[RDD[(Long, Long)]]
 }
 
 }
+```
+
 ## Footnotes
 <a name="f1">
    </a>

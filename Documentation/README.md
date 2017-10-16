@@ -1,8 +1,13 @@
 [1 Introduction](#s1)
+
 [2 Cluster Specifications](#s2)
+
 [3 Experimental Methodology](#s3)
+
 [4 Results: Comparison of Thor to Apache Spark](#s4)
+
 [Appendix A. ECL Code for HPCC Systems](#s5)
+
 [Appendix B. Code for Spark (Scala)](#s6)
 
 <a name="s1"></a>

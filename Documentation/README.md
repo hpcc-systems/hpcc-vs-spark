@@ -1,7 +1,7 @@
 <span id="_Toc423597827" class="anchor"><span id="_Toc492896162" class="anchor"><span id="_Toc495656331" class="anchor"></span></span></span>Introduction
 =========================================================================================================================================================
 
-In the past, there have been papers that discussed the performance of Apache Spark<sup>1</sup>. But, no paper has compared the Apache Spark’s performance to the HPCC Systems Thor cluster<sup>2</sup> performance.
+In the past, there have been papers that discussed the performance of Apache Spark[<sup>1</sup>[(#f1). But, no paper has compared the Apache Spark’s performance to the HPCC Systems Thor cluster<sup>2</sup> performance.
 
 When we first became interested in comparing a Thor cluster to an Apache Spark cluster we started to look at the performance of a Thor cluster when executing the Gray Sort. Why? Because a Spark cluster had won the 2014 Gray Sort competition where 100 TBs of data where sorted using 206 AWS i2.8xlarge instance types<sup>1</sup>. We abandoned this effort because of the expense of 206 i2.8xlarge instance types (currently $6.820 per instance per hour or $1,404.92 per hour for 206 instances)<sup>3</sup>.
 
@@ -682,6 +682,8 @@ rdd.asInstanceOf[RDD[(Long, Long)]]
 
 }
 
+<a name="f1">
+</a>
 [1] [https://spark.apache.org/news/spark-wins-daytona-gray-sort-100tb-benchmark.html](../customXml/item1.xml)
 
 [https://link.springer.com/chapter/10.1007/978-3-319-31409-9\_3](../customXml/item2.xml)

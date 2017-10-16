@@ -1,4 +1,6 @@
-<span style="font-size:20pt"><p align="center">Performance: HPCC Systems Thor vs Apache Spark</p></span>
+<p align="center">
+#Performance: HPCC Systems Thor vs Apache Spark
+</p>
 
 [1 Introduction](#s1)
 

@@ -1,9 +1,9 @@
 <span id="_Toc423597827" class="anchor"><span id="_Toc492896162" class="anchor"><span id="_Toc495656331" class="anchor"></span></span></span>Introduction
 =========================================================================================================================================================
 
-In the past, there have been papers that discussed the performance of Apache Spark[<sup>1</sup>](#f1). But, no paper has compared the Apache Spark’s performance to the HPCC Systems Thor cluster<sup>2</sup> performance.
+In the past, there have been papers that discussed the performance of Apache Spark[<sup>1</sup>](#f1). But, no paper has compared the Apache Spark’s performance to the HPCC Systems Thor cluster[<sup>2</sup>](#f2) performance.
 
-When we first became interested in comparing a Thor cluster to an Apache Spark cluster we started to look at the performance of a Thor cluster when executing the Gray Sort. Why? Because a Spark cluster had won the 2014 Gray Sort competition where 100 TBs of data where sorted using 206 AWS i2.8xlarge instance types<sup>1</sup>. We abandoned this effort because of the expense of 206 i2.8xlarge instance types (currently $6.820 per instance per hour or $1,404.92 per hour for 206 instances)<sup>3</sup>.
+When we first became interested in comparing a Thor cluster to an Apache Spark cluster we started to look at the performance of a Thor cluster when executing the Gray Sort. Why? Because a Spark cluster had won the 2014 Gray Sort competition where 100 TBs of data where sorted using 206 AWS i2.8xlarge instance types[<sup>1</sup>](#f1). We abandoned this effort because of the expense of 206 i2.8xlarge instance types (currently $6.820 per instance per hour or $1,404.92 per hour for 206 instances)[<sup>3</sup>](#f3).
 
 We decided to host both Thor and Apache Spark clusters on a small number of lower cost AWS instance types. We felt this would be a good test for two reasons: 1) the lower cost made it possible to do the experiments, and 2) most often those interested in using a data cluster like Thor or Apache Spark would use a smaller number of instances and if they used AWS they would probably use a less expensive instance type. Also, we decided to test the performance of both clusters on a variety of different functions because it would give the reader a better feel for what computation each cluster type performed best. <span id="_Toc492896163" class="anchor"></span>
 
@@ -27,7 +27,7 @@ There are three parameters we have considered while tuning the performance of Sp
 <span id="_Toc492896166" class="anchor"><span id="_Toc495656335" class="anchor"></span></span>Experimental Methodology
 ======================================================================================================================
 
-The functions executed by both the Thor and Apache Spark clusters were selected for two reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others (specifically DataBricks) have used the same functions studying the performance of the Apache Spark cluster<sup>4</sup>.
+The functions executed by both the Thor and Apache Spark clusters were selected for two reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others (specifically DataBricks) have used the same functions studying the performance of the Apache Spark cluster[<sup>4</sup>](#f4).
 
 <span id="_Toc492896167" class="anchor"><span id="_Toc495656336" class="anchor"></span></span>3.1 Data Generation
 -----------------------------------------------------------------------------------------------------------------
@@ -681,7 +681,7 @@ rdd.asInstanceOf[RDD[(Long, Long)]]
 }
 
 }
-
+## Footnotes
 <a name="f1">
 </a>
 [1] [https://spark.apache.org/news/spark-wins-daytona-gray-sort-100tb-benchmark.html](../customXml/item1.xml)
@@ -690,8 +690,14 @@ rdd.asInstanceOf[RDD[(Long, Long)]]
 
 https://www.oreilly.com/ideas/investigating-sparks-performance
 
+<a name="f2">
+</a>
 [2] An HPCC Systems can have two different types of clusters – a Thor and/or ROXIE cluster. A ROXIE cluster, or rapid delivery engine, functions as the engine that delivers answers to queries (e.g. from the web). The function of a Thor cluster is very similar to the function of a Spark cluster. Both are designed to execute big data workflows, including such tasks as extraction, loading, cleansing, transformations, linking and indexing.
 
+<a name="f3">
+</a>
 [3] i2.8xlarge instance type is a retired instance type. Today, an equivalent is i3.8xlarge which costs much less, $2.496 per hour.
 
+<a name="f4">
+</a>
 [4] [https://github.com/databricks/spark-perf](numbering.xml)

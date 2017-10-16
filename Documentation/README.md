@@ -1,3 +1,11 @@
+[1 Introduction](#s1)
+[2 Cluster Specifications](#s2)
+[3 Experimental Methodology](#s3)
+[4 Results: Comparison of Thor to Apache Spark](#s4)
+[Appendix A. ECL Code for HPCC Systems](#s5)
+[Appendix B. Code for Spark (Scala)](#s6)
+
+<a name="s1"></a>
 # 1 Introduction
 
 In the past, there have been papers that discussed the performance of Apache Spark[<sup>1</sup>](#f1). But, no paper has compared the Apache Spark’s performance to the HPCC Systems Thor cluster[<sup>2</sup>](#f2) performance.
@@ -6,6 +14,7 @@ When we first became interested in comparing a Thor cluster to an Apache Spark c
 
 We decided to host both Thor and Apache Spark clusters on a small number of lower cost AWS instance types. We felt this would be a good test for two reasons: 1) the lower cost made it possible to do the experiments, and 2) most often those interested in using a data cluster like Thor or Apache Spark would use a smaller number of instances and if they used AWS they would probably use a less expensive instance type. Also, we decided to test the performance of both clusters on a variety of different functions because it would give the reader a better feel for what computation each cluster type performed best. <span id="_Toc492896163" class="anchor"></span>
 
+<a name="s2"></a>
 # 2 Cluster Specifications
 
 Both the Thor and Spark clusters were created on AWS with one r3.2xlarge instance type for the master and 3 r3.2xlarge instance types for slaves. The r3.2xlarge instance type has 8 cores, 61 GiB RAM, and 160 GB SSD storage.
@@ -20,6 +29,7 @@ We tried three different settings for slavesPerNode, 4, 8, and 16. We got the fa
 
 There are three parameters we have considered while tuning the performance of Spark: number of executors, executor core, and executor memory. We found the fastest execution times with executors as 24, executor core as 1 and executor memory is 7000MB.
 
+<a name="s3"></a>
 # 3 Experimental Methodology
 
 The functions executed by both the Thor and Apache Spark clusters were selected for two reasons: 1) both have these functions as fundamental operations (for HPCC Systems in the ECL language and for Spark in the Scala language); and 2) others (specifically DataBricks) have used the same functions studying the performance of the Apache Spark cluster[<sup>4</sup>](#f4).
@@ -56,6 +66,7 @@ For the data, we chose two sizes: 100 GB and 200 GB. These sizes were chosen bec
 
 ![](./media/image6.png)
 
+<a name="s4"></a>
 # 4 Results: Comparison of Thor to Apache Spark
 
 Below are the bar charts comparing execution times for each benchmark function executed on both Apache Spark and Thor. In section 4.1 and section 4.2 there are two bar charts that compare Apache Spark to Thor. The first bar chart compares execution times when the size of the data is 100GB; while, the second compares execution times when the size of the data is 200 GB. In each bar chart, there are 2 bars: one for Spark (**blue bars**), and one for Thor (**tan bars**).
@@ -87,6 +98,7 @@ For SortByKey, both clusters had similar average execution times. For all other 
 
 ![](./media/Speedup200GB.png)
 
+<a name="s5"></a>
 # Appendix A. ECL Code for HPCC Systems
 
 Below is the ECL code that executes the benchmark functions. You will notice that the last statement of each function is an OUTPUT statement that outputs the COUNT, i.e. the number of records in the resulting dataset. The main purpose for this statement is to cause the execution of the code. Why? Because statements of an ECL program do NOT execute until an “action” statement is encounter. The OUTPUT statement is our “action” statement.
@@ -199,6 +211,7 @@ outdata1 := sort(outdata, key);
 OUTPUT(COUNT(NOFOLD(outdata1)));
 ```
 
+<a name="s6"></a>
 # Appendix B. Code for Spark (Scala)
 
 Below, first find the scala object DataGenerator which includes the code to generate both the string and integer data. After the DataGenerator is the scala code for the six benchmark functions.

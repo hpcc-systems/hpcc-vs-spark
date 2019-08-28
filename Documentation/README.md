@@ -1,4 +1,4 @@
-<center><h1>Performance on AWS: HPCC Systems Thor vs Apache Spark</h1></center>
+<center><h1>Performance on AWS: HPCC Systems Thor vs Apache Spark<p>October 2017</p></h1></center>
 
 [1 Introduction](#s1)
 
